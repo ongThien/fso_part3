@@ -25,10 +25,9 @@ let persons = [
 ];
 
 const generateId = () => {
-  const maxId =
-    persons.length > 0 ? Math.max(...persons.map((n) => Number(n.id))) : 0;
-  return String(maxId + 1);  
-}
+  const maxId = Math.floor(Math.random() * persons.length * 100000);
+  return String(maxId);
+};
 
 app.use(express.json());
 
@@ -53,17 +52,32 @@ app.get("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
   const body = req.body;
 
-  if (!body.content) {
+  if (!body.name) {
     return res.status(400).json({
-      error: "content missing"
-    })
+      error: "name missing",
+    });
+  }
+
+  if (!body.number) {
+    return res.status(400).json({
+      error: "number missing",
+    });
+  }
+
+  const nameExist = persons.find((p) => p.name === body.name);
+  console.log(nameExist);
+  
+  if (nameExist) {
+    return res.status(409).json({
+      error: "name must be unique",
+    });
   }
 
   const person = {
     id: generateId(),
-    content: body.content,
-    important: Boolean(body.important) || false
-  }
+    name: body.name,
+    number: body.number,
+  };
 
   persons = persons.concat(person);
 
@@ -81,7 +95,7 @@ app.delete("/api/persons/:id", (req, res) => {
 app.get("/api/info", (req, res) => {
   const info = `Phonebook has info for ${persons.length} people`;
   const date = new Date();
-  res.send(`<p>${info}</br>${date}</p>`)
+  res.send(`<p>${info}</br>${date}</p>`);
 });
 
 const PORT = 3001;
