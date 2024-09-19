@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
 
 let persons = [
@@ -29,7 +30,30 @@ const generateId = () => {
   return String(maxId);
 };
 
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({
+    error: "unknown endpoint",
+  });
+};
+
 app.use(express.json());
+app.use(
+  morgan("tiny", {
+    skip: (req, res) => req.method === "POST",
+  })
+);
+
+morgan.token("data", (req, res) => {
+  if (req.method === "POST") {
+    return `{"name":${req.body.name}, "number":${req.body.number}}`;
+  }
+});
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :data",
+    { skip: (req, res) => req.method !== "POST" }
+  )
+);
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -66,7 +90,7 @@ app.post("/api/persons", (req, res) => {
 
   const nameExist = persons.find((p) => p.name === body.name);
   console.log(nameExist);
-  
+
   if (nameExist) {
     return res.status(409).json({
       error: "name must be unique",
@@ -97,6 +121,8 @@ app.get("/api/info", (req, res) => {
   const date = new Date();
   res.send(`<p>${info}</br>${date}</p>`);
 });
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
