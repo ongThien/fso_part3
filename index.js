@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const app = express();
 
 let persons = [
@@ -55,6 +56,13 @@ app.use(
   )
 );
 
+const corsOptions = {
+  // origin: "http://localhost:5173",
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
 });
@@ -89,7 +97,6 @@ app.post("/api/persons", (req, res) => {
   }
 
   const nameExist = persons.find((p) => p.name === body.name);
-  console.log(nameExist);
 
   if (nameExist) {
     return res.status(409).json({
@@ -124,7 +131,7 @@ app.get("/api/info", (req, res) => {
 
 app.use(unknownEndpoint);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
