@@ -4,7 +4,7 @@
   "description": "part3' exercises of fso curriculum",
   "main": "index.js",
   "scripts": {
-    "build:ui": "rm -rf dist && cd ../part2/phonebook && npm run build && cp -r dist ../part3",
+    "build:ui": "rm -rf dist && cd ../part2/phonebook && npm run build && cp -r dist ../../part3",
     "deploy:full": "npm run build:ui && git add . && git commit -m 'finished 3.11 Full Stack Phonebook' && git push",
     "start": "node index.js",
     "dev": "nodemon index.js",
