@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build:ui": "rm -rf dist && cd ../part2/phonebook && npm run build && cp -r dist ../../part3",
-    "deploy:full": "npm run build:ui && git add . && git commit -m 'finished 3.21 Deploying the database backend to production' && git push",
+    "deploy:full": "npm run build:ui && git add . && git commit -m 'build ui' && git push",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix ."
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,10 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.11.0",
+    "@stylistic/eslint-plugin-js": "^2.8.0",
+    "eslint": "^9.11.0",
+    "globals": "^15.9.0",
     "nodemon": "^3.1.5"
   }
 }

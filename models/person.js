@@ -15,7 +15,7 @@ const personSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (name) => name.length >= 3,
-      message: (props) => `must be at least 3 characters`
+      message: (props) => "must be at least 3 characters"
     },
     required: [true, "contact's name is required"],
   },

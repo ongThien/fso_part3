@@ -38,7 +38,7 @@ if (args.length === 3) {
 
   new Person(contact).save().then((result) => {
     console.log(`added ${contact.name} number ${contact.number} to phonebook`);
-    // console.log(result);
+    // console.log(result)
     mongoose.connection.close();
   });
 } else {
@@ -48,7 +48,7 @@ if (args.length === 3) {
     "if the name contains whitespace characters, it must be enclosed in quotes:"
   );
   console.log(
-    'example: node mongo.js yourpassword "Arto Vihavainen" 045-1232456'
+    "example: node mongo.js yourpassword \"Arto Vihavainen\" 045-1232456"
   );
   mongoose.connection.close();
 }
